@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,100,500,300italic,500italic,700italic,900,300');
+@import url('https://fonts.googleapis.com/css?family=Eczar:400,500&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Slab:400,700&display=swap');
+
+* {
+    /*background: #33339903;*/
+    /*border-radius: 6px;*/
+    /*border: 1px dashed gainsboro;*/
+    font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+    font-weight: 700;
+    letter-spacing: 0;
+    /*padding: 10px;*/
+    margin: 0;
+    color: #fff8f1;
+    user-select: none;
+    font-family: 'Roboto Slab', serif;
+}
+
+body {
+    width: 98vw;
+    height: 97vh;
+    margin: 0;
+    padding: 8px;
+    background: #5d4037;
+    /*background: url("https://sun9-9.userapi.com/slb7xkxUaxj8w2ZOBL3CjkDY4EzIFlC_vU8Mvw/nphvH7zZHWE.jpg") no-repeat center center fixed;*/
+    background-size: cover;
+}
+
+.main-container {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.common-styles__default-container {
+    /*background: url("https://sun9-7.userapi.com/jWKm_51zCg43e-O_GksWhJW1Jftyfulk0-UQ8w/MMfFDtvUud4.jpg");*/
+    margin: 5px;
+    box-sizing: border-box;
+    background: rgba(255, 249, 242, 0.42);
+    display: inline-block;
+    flex-direction: column;
+    border-radius: 4px;
+    padding: 16px;
+    user-select: none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.common-styles__cut-corners {
+    clip-path:
+            polygon(
+                    0% 20px,                 /* top left */
+                    20px 0%,                 /* top left */
+                    calc(100% - 20px) 0%,    /* top right */
+                    100% 20px,               /* top right */
+                    100% calc(100% - 20px),  /* bottom right */
+                    calc(100% - 20px) 100%,  /* bottom right */
+                    20px 100%,               /* bottom left */
+                    0 calc(100% - 20px)      /* bottom left */
+            );
+}
+
+.common-styles__input {
+    background: mintcream;
+    color: cornflowerblue;
+    display: inline-block;
+    border-radius: 5px;
+    padding: 8px;
+    border-color: cornflowerblue;
+    border-style: solid;
+    box-sizing: border-box;
+}
+
+.common-styles__button {
+    background: white;
+    color: #18243a;
+    display: inline-block;
+    border-color: cornflowerblue;
+    border-style: solid;
+    font-style: italic;
+    box-sizing: border-box;
+    font-size: 1.0em;
+    margin: 5px;
+    padding: 0;
+    overflow: hidden;
+    border-width: 0;
+    outline: none;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.common-styles__button > * {
+    position: relative;
+}
+
+.common-styles__button span {
+    display: block;
+    padding: 12px 24px;
+}
+
+.common-styles__button:hover, .common-styles__button:focus {
+    cursor: pointer;
+    background-color: #ede7d2;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.common-styles__text-button {
+    background: none;
+    border: none;
+    font-family: 'Roboto Slab', serif;
+    padding: 8px;
+    font-size: 12pt;
+    font-weight: 900;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    color: #5d4037;
+}
+
+.common-styles__text-button:hover,
+.common-styles__text-button:focus {
+    cursor: pointer;
+    color: #8f6255;
+}
+
+.common-styles__text {
+    user-select: none;
+}
+
+.common-styles__money {
+    font-family: 'Eczar', serif;
+    font-weight: 400;
+}
+
+.common-styles__input:focus {
+    border-style: dashed;
+}
+
+.common-styles__submit {
+    color: forestgreen;
+}
+
+.common-styles__button:disabled {
+    opacity: 0.5;
+    background: mintcream;
+    cursor: default;
+}
+
+.common-styles__money-bar {
+    display: inline-block;
+    border-radius: 50%;
+    height: 100px;
+    line-height: 100px;
+    width: 100px;
+    background: #444342;
+    border: 2px solid #ffc107;
+    text-align: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.common-styles__money-bar:hover {
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.common-styles__money-bar > span {
+    color: #ffc107;
+    font-size: 1.3em;
+    font-family: 'Eczar', serif;
+    font-weight: 500;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+}

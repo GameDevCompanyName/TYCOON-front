@@ -1,0 +1,10 @@
+.city-actions__main {
+    /*display: flex;*/
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.city-actions__main > div {
+    margin: 5px;
+}

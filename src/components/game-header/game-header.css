@@ -1,0 +1,20 @@
+.game-header__main {
+    padding: 10px 20px;
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.game-header__title {
+    display: inline-block;
+    font-size: 1.5em;
+    justify-self: flex-start;
+    margin-left: 10px;
+}
+
+.game-header__quit {
+    display: inline-block;
+    justify-self: flex-end;
+}

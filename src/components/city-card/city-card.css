@@ -1,0 +1,30 @@
+.city-card__main {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+.city-card__photo {
+    background: url("https://i.pinimg.com/originals/cb/b2/40/cbb240c998cb9275e0654789ca870367.jpg");
+    background-size: cover;
+    flex-basis: 60%;
+    transition: all .5s;
+}
+
+.city-card__photo:hover {
+    transform: scale(1.02);
+}
+
+.city-card__info {
+    flex-basis: 40%;
+}
+
+.city-card__info > h1 {
+    text-align: center;
+    margin: 10px;
+}
+
+.city-card__info > div {
+    margin: 5px;
+}

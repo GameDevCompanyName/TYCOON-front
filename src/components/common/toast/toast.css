@@ -1,0 +1,23 @@
+.toast__main {
+    border-radius: 0;
+    background: #fff0e9;
+    display: flex;
+    padding: 8px;
+    width: 360px;
+    min-height: 112px;
+    word-wrap: break-word;
+}
+
+.toast__text {
+    font-weight: 400;
+    color: #1d1d1d;
+    display: inline-block;
+    padding: 8px 8px 0;
+}
+
+.toast__button {
+    margin-top: auto;
+    width: fit-content;
+    align-self: flex-end;
+    display: inline-block;
+}

@@ -1,0 +1,57 @@
+.game__main-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.game__header {
+}
+
+.game__footer {
+    /*TODO*/
+}
+
+.game__main-content {
+    flex-grow: 30;
+    display: flex;
+    flex-flow: row wrap;
+    flex-direction: row;
+    align-items: center;
+}
+
+.game__main-content__city-card {
+    height: 100%;
+    flex-basis: 34%;
+}
+
+.game__main-content__interaction {
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    flex-basis: 66%;
+    display: flex;
+    flex-direction: column;
+}
+
+.game__main-content__interaction__actions {
+    flex-basis: 60%;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.game__main-content__interaction__player {
+    flex-basis: 40%;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.game__toast-wrapper {
+    margin: 5px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: fit-content;
+}

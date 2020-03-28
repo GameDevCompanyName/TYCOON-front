@@ -1,0 +1,15 @@
+.info-note__main {
+    background: rgba(89, 218, 59, 0.32);
+    display: inline-block;
+    border-radius: 10px;
+    padding: 10px;
+    user-select: none;
+    font-size: 1.1em;
+    color: #040727;
+    word-wrap: break-spaces;
+    max-width: 300px;
+}
+
+.info-note__main:hover {
+    background: rgba(89, 218, 59, 0.51);
+}

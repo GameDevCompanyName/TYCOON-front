@@ -1,0 +1,14 @@
+.interaction-panel__main {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.interaction-panel__city-actions {
+    flex-basis: 60%;
+}
+
+.interaction-panel__player-status {
+    flex-basis: 40%;
+}

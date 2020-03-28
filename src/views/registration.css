@@ -1,0 +1,7 @@
+.registration__main-wrapper {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    margin: 26vh auto 0;
+    align-items: center;
+}
