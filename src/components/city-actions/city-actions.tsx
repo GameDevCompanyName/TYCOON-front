@@ -18,7 +18,7 @@ const CityActions = (props: any) => {
                 entryName={entry.name}
                 entryCost={entry.cost}
                 entryQuantity={entry.quantity}
-                onAction={props.onStoreAction}
+                onStoreAction={props.onStoreAction}
             />
         );
     });

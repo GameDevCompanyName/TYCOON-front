@@ -20,16 +20,20 @@ import ToastContainer from "../components/common/toast-container/toast-container
 import {Config} from "../common/config";
 import {initPixiApp} from "../components/interactive-map/interactive-map";
 
+let shoppingCartBuffer = new Map<number, number>();
+
 const Game = () => {
 
     const {addToast} = useToasts();
     const [playerData, setPlayerData] = useState(PlayerData.initialState);
     const [cityData, setCityData] = useState(CityData.testState);
+    const [shoppingCart, setShoppingCart] = useState(new Map<number, number>());
 
     let socket: WebSocket;
 
     onload = function () {
         socket = new WebSocket("ws://192.168.1.50:8080/game");
+        // reloadShoppingCart();
     };
 
     // function showToast(text: any) {
@@ -40,8 +44,39 @@ const Game = () => {
         setPlayerData(playerData);
     }
 
-    function storeAction(entryId: string, action: StoreAction) {
-        alert(entryId + action.toString());
+    function reloadShoppingCart() {
+        shoppingCartBuffer = new Map<number, number>();
+        cityData.storeInfo.forEach(function (entry) {
+            shoppingCartBuffer.set(entry.id, 0);
+        });
+        setShoppingCart(shoppingCartBuffer);
+    }
+
+    function onStoreAction(entryId: number, action: StoreAction) {
+        shoppingCartBuffer = new Map<number, number>(shoppingCart.entries());
+        let oldValue = shoppingCartBuffer.get(entryId);
+        if (oldValue == null)
+            oldValue = 0;
+        switch (action) {
+            case game.StoreAction.Buy: {
+                if (oldValue == -1){
+                    shoppingCartBuffer.delete(entryId);
+                } else {
+                    shoppingCartBuffer.set(entryId, oldValue + 1);
+                }
+                break;
+            }
+            case game.StoreAction.Sell: {
+                if (oldValue == 1){
+                    shoppingCartBuffer.delete(entryId);
+                } else {
+                    shoppingCartBuffer.set(entryId, oldValue - 1);
+                }
+                break;
+            }
+        }
+        setShoppingCart(shoppingCartBuffer);
+        console.log(shoppingCart);
     }
 
     function cityDataUpdated(cityData: CityData) {
@@ -75,10 +110,11 @@ const Game = () => {
                 </div>
                 <div className="game__main-content__interaction">
                     <InteractionPanel
-                        onStoreAction={storeAction}
+                        onStoreAction={onStoreAction}
                         storeInfo={cityData.storeInfo}
                         callback={updateInfo}
                         playerData={playerData}
+                        shoppingCart={shoppingCart}
                     />
                 </div>
             </div>

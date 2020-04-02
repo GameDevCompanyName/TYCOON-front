@@ -11,6 +11,19 @@ const PlayerStatus = (props : any) => {
         callback();
     }
 
+    function buildElements(shoppingCart : Map<number, number>) {
+        let elements = new Array<JSX.Element>();
+        shoppingCart.forEach(function (value: number, key: number) {
+            elements.push(
+                <li key={key}>
+                    {key} : {value}
+                </li>
+            );
+        });
+        return elements;
+    }
+
+
     return (
         <div className="player-status__main">
             <div className="common-styles__money-bar">
@@ -22,6 +35,9 @@ const PlayerStatus = (props : any) => {
             <button className="common-styles__button">
                 <span>Обновить контент</span>
             </button>
+            <ul>
+                {buildElements(props.shoppingCart)}
+            </ul>
         </div>
     )
 };

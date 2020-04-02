@@ -17,6 +17,7 @@ const InteractionPanel = (props : any) => {
             <div className="interaction-panel__wrapper">
                 <div className="interaction-panel__player-status common-styles__cut-corners common-styles__default-container">
                     <PlayerStatus
+                        shoppingCart={props.shoppingCart}
                         callback={props.callback}
                         playerData={props.playerData}
                     />

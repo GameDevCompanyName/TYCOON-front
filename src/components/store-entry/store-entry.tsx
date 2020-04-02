@@ -7,12 +7,14 @@ function StoreEntry(props: any) {
 
     function handleBuy(e: any) {
         e.preventDefault();
-        props.onAction(props.entryId, StoreAction.Buy);
+        console.log("Купить");
+        props.onStoreAction(props.entryId, StoreAction.Buy);
     }
 
     function handleSell(e: any) {
         e.preventDefault();
-        props.onAction(props.entryId, StoreAction.Sell);
+        console.log("Продать");
+        props.onStoreAction(props.entryId, StoreAction.Sell);
     }
 
     return (
