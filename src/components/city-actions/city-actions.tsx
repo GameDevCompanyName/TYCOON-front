@@ -17,6 +17,7 @@ const CityActions = (props: any) => {
                 entryId={entry.id}
                 entryName={entry.name}
                 entryCost={entry.cost}
+                entryQuantity={entry.quantity}
                 onAction={props.onStoreAction}
             />
         );
@@ -28,8 +29,6 @@ const CityActions = (props: any) => {
             <TitleField field="Например сегодня у нас бесплатные пирожки."/>
             {entries}
             <TitleField field="А завтра макароны"/>
-            {entries}
-            {entries}
         </div>
     )
 };

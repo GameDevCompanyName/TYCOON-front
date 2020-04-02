@@ -24,19 +24,7 @@ const Game = () => {
 
     const {addToast} = useToasts();
     const [playerData, setPlayerData] = useState(PlayerData.initialState);
-    const [cityData, setCityData] = useState(CityData.initialState);
-    const [storeInfo, setStoreInfo] = useState(new Array<StoreEntryInfo>());
-
-    useEffect(() => {
-        let list = new Array<StoreEntryInfo>();
-        list.push(
-            new StoreEntryInfo(1, "Дерево", cityData.costMask)
-        );
-        list.push(
-            new StoreEntryInfo(2, "Камень", cityData.costVacc)
-        );
-        setStoreInfo(list);
-    }, [cityData]);
+    const [cityData, setCityData] = useState(CityData.testState);
 
     let socket: WebSocket;
 
@@ -88,7 +76,7 @@ const Game = () => {
                 <div className="game__main-content__interaction">
                     <InteractionPanel
                         onStoreAction={storeAction}
-                        storeInfo={storeInfo}
+                        storeInfo={cityData.storeInfo}
                         callback={updateInfo}
                         playerData={playerData}
                     />
@@ -105,5 +93,9 @@ const Game = () => {
 };
 
 let root = document.getElementById("react-game-root");
-root && ReactDOM.render(<ToastProvider placement="bottom-right" autoDismissTimeout={10000}><Game/></ToastProvider>, root);
+root && ReactDOM.render(
+    <ToastProvider placement="bottom-right" autoDismissTimeout={10000}>
+        <Game/>
+    </ToastProvider>,
+    root);
 initPixiApp();

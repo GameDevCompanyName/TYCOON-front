@@ -1,29 +1,59 @@
-.store-entry__main {
+.store-entry__shit-wrapper {
     display: inline-block;
-    padding: 0px;
+}
+
+.store-entry__main {
+    display: flex;
+    height: 42px;
     background: #607d8b;
-    border-radius: 50px;
+    border-radius: 42px;
+    text-align: center;
+    vertical-align: center;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 
 .store-entry__button {
+    display: inline-block;
     box-sizing: content-box;
     margin: 0;
-    width: 30px;
-    height: 30px;
+    width: 42px;
+    height: 42px;
     font-style: normal;
-    font-size: 0.8em;
-    border-radius: 60px;
+    border-radius: 42px;
+}
+
+.store-entry__plus {
+
+}
+
+.store-entry__minus {
+
+}
+
+.store-entry__text-wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0 5px 0 0;
+}
+
+.store-entry__top-text-wrapper {
+    padding: 0;
+    margin: 0;
 }
 
 .store-entry__text {
+    display: inline-block;
     color: white;
-    font-size: 0.8em;
     margin-left: 5px;
     margin-right: 5px;
 }
 
 .store-entry__cost {
-    margin-right: 5px;
+    display: inline-block;
     color: #ffc107;
+}
+
+.store-entry__quantity {
+    color: #6cb662;
 }

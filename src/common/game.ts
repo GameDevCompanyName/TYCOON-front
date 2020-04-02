@@ -35,40 +35,51 @@ export module game {
         );
     }
 
-    export class CityData {
-        constructor(id: number, name: string, costMask: number, costVacc: number, players: Array<string>) {
-            this.id = id;
-            this.name = name;
-            this.costMask = costMask;
-            this.costVacc = costVacc;
-            this.players = players;
-        }
-
-        id: number;
-        name: string;
-        costMask: number;
-        costVacc: number;
-        players: Array<string>;
-
-        static initialState: CityData = new CityData(
-            -1,
-            "Петербург",
-            16,
-            88,
-            new Array<string>()
-        );
-    }
-
     export class StoreEntryInfo {
-        constructor(id: number, name: string, cost: number) {
+        constructor(id: number, name: string, cost: number, quantity: number) {
             this.id = id;
             this.name = name;
             this.cost = cost;
+            this.quantity = quantity;
         }
 
         id: number;
         name: string;
         cost: number;
+        quantity: number;
+    }
+
+    export class CityData {
+        constructor(id: number, name: string, store: Array<StoreEntryInfo>, players: Array<string>) {
+            this.id = id;
+            this.name = name;
+            this.storeInfo = store;
+            this.players = players;
+        }
+
+        id: number;
+        name: string;
+        storeInfo: Array<StoreEntryInfo>;
+        players: Array<string>;
+
+        static initialState: CityData = new CityData(
+            0,
+            "",
+            new Array<StoreEntryInfo>(),
+            new Array<string>()
+        );
+
+        static testState: CityData = new CityData(
+            16,
+            "Петербург",
+            new Array<StoreEntryInfo>(
+                new StoreEntryInfo(0, "Дерево", 80, 567),
+                new StoreEntryInfo(1, "Камень", 135, 154),
+                new StoreEntryInfo(2, "Камень", 846, 63),
+                new StoreEntryInfo(3, "Золото", 5314, 8)
+            ),
+            new Array<string>()
+        );
     }
 
     export class ToastData {

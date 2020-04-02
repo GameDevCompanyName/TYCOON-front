@@ -14,7 +14,7 @@ const LoginForm = () => {
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
     useEffect(() => {
-        if (username.trim().length == 0 && password.trim().length == 0) {
+        if (username.trim().length == 0 || password.trim().length == 0) {
             setIsButtonDisabled(true);
         } else {
             setIsButtonDisabled(false);

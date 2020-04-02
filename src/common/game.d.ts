@@ -14,20 +14,21 @@ export declare module game {
         userId: number;
         static initialState: PlayerData;
     }
-    class CityData {
-        constructor(id: number, name: string, costMask: number, costVacc: number, players: Array<string>);
-        id: number;
-        name: string;
-        costMask: number;
-        costVacc: number;
-        players: Array<string>;
-        static initialState: CityData;
-    }
     class StoreEntryInfo {
-        constructor(id: number, name: string, cost: number);
+        constructor(id: number, name: string, cost: number, quantity: number);
         id: number;
         name: string;
         cost: number;
+        quantity: number;
+    }
+    class CityData {
+        constructor(id: number, name: string, store: Array<StoreEntryInfo>, players: Array<string>);
+        id: number;
+        name: string;
+        storeInfo: Array<StoreEntryInfo>;
+        players: Array<string>;
+        static initialState: CityData;
+        static testState: CityData;
     }
     class ToastData {
         constructor(text: string, buttonText: string, deleteHandler: Function, onClick: Function, key: number);

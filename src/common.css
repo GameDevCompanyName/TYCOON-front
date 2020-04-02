@@ -64,14 +64,37 @@ body {
 }
 
 .common-styles__input {
-    background: mintcream;
-    color: cornflowerblue;
+    background: white;
+    color: #18243a;
     display: inline-block;
-    border-radius: 5px;
-    padding: 8px;
-    border-color: cornflowerblue;
+    border-color: white;
     border-style: solid;
+    font-style: italic;
     box-sizing: border-box;
+    font-size: 1.0em;
+    margin: 5px;
+    padding: 12px 24px;
+    overflow: hidden;
+    border-width: 2px;
+    outline: none;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.common-styles__input:hover {
+    cursor: text;
+    background-color: #ede7d2;
+    border-color: #ede7d2;
+}
+
+.common-styles__input::placeholder {
+    color: rgba(0, 0, 0, 0.24);
+}
+
+.common-styles__input:focus {
+    border-color: cornflowerblue;
+    border-width: 2px;
 }
 
 .common-styles__button {
@@ -132,10 +155,6 @@ body {
 .common-styles__money {
     font-family: 'Eczar', serif;
     font-weight: 400;
-}
-
-.common-styles__input:focus {
-    border-style: dashed;
 }
 
 .common-styles__submit {
