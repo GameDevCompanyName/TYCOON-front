@@ -1,10 +1,23 @@
 .game-header__main {
+    opacity: 0.5;
     padding: 10px 20px;
-    height: 80px;
+    margin: 0;
+    background: #704f41;
+    border-radius: 0;
+    height: 30px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    box-shadow: 0 0 3px #000000;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.game-header__main:hover {
+    opacity: 1.0;
+    height: 70px;
+    box-shadow: 0 0 6px #000000;
 }
 
 .game-header__title {

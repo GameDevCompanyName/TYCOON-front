@@ -25,7 +25,9 @@ const CityActions = (props: any) => {
     return (
         <div className="city-actions__main">
             <TitleField field="Также здесь могут висеть информационные сообщения. Объявления вские и прочее."/>
+            <TitleField field="Например сегодня у нас бесплатные пирожки."/>
             {entries}
+            <TitleField field="А завтра макароны"/>
             {entries}
             {entries}
         </div>

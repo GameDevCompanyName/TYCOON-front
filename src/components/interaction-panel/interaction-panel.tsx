@@ -2,6 +2,7 @@ import * as React from "react";
 import PlayerStatus from "../player-status/player-status";
 import CityActions from "../city-actions/city-actions";
 import "./interaction-panel.css";
+import Chat from "../chat/chat";
 
 const InteractionPanel = (props : any) => {
 
@@ -13,12 +14,18 @@ const InteractionPanel = (props : any) => {
                     storeInfo={props.storeInfo}
                 />
             </div>
-            <div className="interaction-panel__player-status common-styles__default-container common-styles__cut-corners">
-                <PlayerStatus
-                    callback={props.callback}
-                    playerData={props.playerData}
-                />
+            <div className="interaction-panel__wrapper">
+                <div className="interaction-panel__player-status common-styles__cut-corners common-styles__default-container">
+                    <PlayerStatus
+                        callback={props.callback}
+                        playerData={props.playerData}
+                    />
+                </div>
+                <div className="interaction-panel__chat common-styles__default-container common-styles__cut-corners">
+                    <Chat/>
+                </div>
             </div>
+
         </div>
     )
 };

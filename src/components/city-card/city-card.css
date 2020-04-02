@@ -5,26 +5,47 @@
     width: 100%;
 }
 
+.city-card__map {
+    /*margin: 10px;*/
+    padding: 0;
+    flex-basis: 60%;
+}
+
 .city-card__photo {
     background: url("https://i.pinimg.com/originals/cb/b2/40/cbb240c998cb9275e0654789ca870367.jpg");
     background-size: cover;
-    flex-basis: 60%;
-    transition: all .5s;
+    height: 80px;
+    transition: all .2s;
+    margin-bottom: 0;
+    padding: 0;
+}
+
+.city-card__photo > h1 {
+    text-align: center;
+    height: 100%;
+    margin: 0;
+    vertical-align: center;
+    line-height: 70px;
+    text-shadow: 0 0 5px #555;
 }
 
 .city-card__photo:hover {
-    transform: scale(1.02);
+    /*transform: scale(1.02);*/
 }
 
 .city-card__info {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
     flex-basis: 40%;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
-.city-card__info > h1 {
-    text-align: center;
-    margin: 10px;
+.city-card__info::-webkit-scrollbar {
+    display: none;
 }
 
 .city-card__info > div {
-    margin: 5px;
+    /*margin: 5px;*/
 }

@@ -20,10 +20,11 @@ h1 {
 }
 
 body {
-    width: 98vw;
-    height: 97vh;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
     margin: 0;
-    padding: 8px;
+    /*padding: 8px;*/
     background: #5d4037;
     /*background: url("https://sun9-9.userapi.com/slb7xkxUaxj8w2ZOBL3CjkDY4EzIFlC_vU8Mvw/nphvH7zZHWE.jpg") no-repeat center center fixed;*/
     background-size: cover;
@@ -34,19 +35,6 @@ body {
     width: 100%;
     margin: 0;
     padding: 0;
-}
-
-.common-styles__default-container {
-    /*background: url("https://sun9-7.userapi.com/jWKm_51zCg43e-O_GksWhJW1Jftyfulk0-UQ8w/MMfFDtvUud4.jpg");*/
-    margin: 5px;
-    box-sizing: border-box;
-    background: rgba(255, 249, 242, 0.42);
-    display: inline-block;
-    flex-direction: column;
-    border-radius: 4px;
-    padding: 16px;
-    user-select: none;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 
 .common-styles__cut-corners {
@@ -61,6 +49,18 @@ body {
                     20px 100%,               /* bottom left */
                     0 calc(100% - 20px)      /* bottom left */
             );
+}
+
+.common-styles__default-container {
+    /*background: url("https://sun9-7.userapi.com/jWKm_51zCg43e-O_GksWhJW1Jftyfulk0-UQ8w/MMfFDtvUud4.jpg");*/
+    margin: 5px;
+    box-sizing: border-box;
+    background: rgba(255, 249, 242, 0.42);
+    display: inline-block;
+    flex-direction: column;
+    border-radius: 4px;
+    padding: 16px;
+    user-select: none;
 }
 
 .common-styles__input {

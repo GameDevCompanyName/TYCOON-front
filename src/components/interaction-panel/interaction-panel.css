@@ -9,6 +9,20 @@
     flex-basis: 60%;
 }
 
-.interaction-panel__player-status {
+.interaction-panel__wrapper {
+    padding: 0;
+    margin: 5px;
+    display: flex;
     flex-basis: 40%;
+    flex-direction: row;
+}
+
+.interaction-panel__player-status {
+    margin: 0 10px 0 0;
+    flex-basis: 50%;
+}
+
+.interaction-panel__chat {
+    margin: 0;
+    flex-basis: 50%;
 }
