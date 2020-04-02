@@ -22,7 +22,7 @@ import {initPixiApp} from "../components/interactive-map/interactive-map";
 
 const Game = () => {
 
-    const {addToast} = useToasts()
+    const {addToast} = useToasts();
     const [playerData, setPlayerData] = useState(PlayerData.initialState);
     const [cityData, setCityData] = useState(CityData.initialState);
     const [storeInfo, setStoreInfo] = useState(new Array<StoreEntryInfo>());

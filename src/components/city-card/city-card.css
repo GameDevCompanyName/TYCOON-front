@@ -2,13 +2,19 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: 100%;
+}
+
+.city-card__wrapper {
+    flex-basis: 100%;
+    display: flex;
+    padding: 0;
 }
 
 .city-card__map {
     /*margin: 10px;*/
+    flex-basis: 100%;
     padding: 0;
-    flex-basis: 60%;
+    margin: 0;
 }
 
 .city-card__photo {
@@ -16,8 +22,8 @@
     background-size: cover;
     height: 80px;
     transition: all .2s;
-    margin-bottom: 0;
     padding: 0;
+    margin: 0;
 }
 
 .city-card__photo > h1 {
@@ -36,10 +42,8 @@
 .city-card__info {
     padding: 0;
     display: flex;
+    height: fit-content;
     flex-direction: column;
-    flex-basis: 40%;
-    overflow-x: hidden;
-    overflow-y: scroll;
 }
 
 .city-card__info::-webkit-scrollbar {
