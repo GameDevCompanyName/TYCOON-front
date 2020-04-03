@@ -22,7 +22,12 @@ let neighboursMap = new Map<number, Array<number>>();
 let polygonsMap = new Map<number, PIXI.Graphics>();
 let metaDataMap = new Map<PIXI.Graphics, PolygonMetaData>();
 
-export function initPixiApp() {
+let moveCallback : Function;
+
+export function initPixiApp(data: string, locationClicked: (id: number) => void) : Function {
+
+    moveCallback = locationClicked;
+
     app = new PIXI.Application({
         width: window.innerWidth,
         height: window.innerHeight
@@ -30,7 +35,7 @@ export function initPixiApp() {
 
     let parentDiv = getParentDiv();
     parentDiv.appendChild(app.view);
-    app.renderer.backgroundColor = 0xF1F1FF;
+    app.renderer.backgroundColor = 0x0077be;
     app.renderer.view.style.position = "absolute";
     app.renderer.view.style.display = "block";
     app.renderer.autoDensity = true;
@@ -41,11 +46,13 @@ export function initPixiApp() {
 
     let playerCircle = new PIXI.Graphics();
     playerCircle.beginFill(0xFFFFFF);
-    playerCircle.drawCircle(mapWidth / 2, mapHeight / 2, 10 * scale);
+    playerCircle.drawCircle(mapWidth / 2, mapHeight / 2, 8 * scale);
     app.stage.addChild(playerCircle);
 
     function resize() {
         let div = getParentDiv();
+        let oldWidth = mapWidth;
+        let oldHeight = mapHeight;
         mapWidth = div.offsetWidth; //TODO
         mapHeight = div.offsetHeight; //TODO
         playerCircle.x = mapWidth / 2;
@@ -58,22 +65,23 @@ export function initPixiApp() {
     resize();
     window.onresize = resize;
 
-    return app;
+    displayWorld(data);
+
+    return moveTo;
 }
 
 function getParentDiv() : HTMLDivElement {
     return document.querySelector(".city-card__map") as (HTMLDivElement);
 }
 
-function main() {
-    initPixiApp();
-}
-
 function displayWorld(worldText: string) {
     let worldObject = JSON.parse(worldText);
-    let cities = worldObject.cities;
+    let cities = JSON.parse(worldObject.data.world);
+
+    console.log(typeof cities);
 
     for (let i = 0; i < cities.length; i++) {
+        console.log("asdasd");
         displayCity(cities[i]);
     }
 }
@@ -118,11 +126,26 @@ function fromOldToNew(progress: number) {
     mapContainer.y = currentY;
 }
 
-function displayCity(city: any) {
-    neighboursMap.set(city.siteId, city.neighbours);
+function callbackMoveTo(id: number) {
+    moveCallback(id);
+}
 
-    const pointsX = city.polygon.pointsX;
-    const pointsY = city.polygon.pointsY;
+function moveTo(id: number) {
+    if (!movementInProgress) {
+        offsetX = metaDataMap.get(polygonsMap.get(id)).midX;
+        offsetY = metaDataMap.get(polygonsMap.get(id)).midY;
+        updateMainContainer();
+    }
+}
+
+function displayCity(city: any) {
+    // neighboursMap.set(city.id, city.neighbours);
+
+    console.log(city.polygonData);
+    let polygonData = (JSON.parse(city.polygonData));
+
+    const pointsX = polygonData.pointsX;
+    const pointsY = polygonData.pointsY;
 
     let maxX = -99999;
     let maxY = -99999;
@@ -147,30 +170,26 @@ function displayCity(city: any) {
     let polygon = new PIXI.Graphics();
     metaDataMap.set(polygon, new PolygonMetaData());
     let data = metaDataMap.get(polygon);
-    data.id = city.siteId;
+    data.id = city.id;
     data.midX = midX;
     data.midY = midY;
     polygon.interactive = true;
     // @ts-ignore
-    polygon.mouseover = function (mouseEvent) {
-        this.tint = 0xFFFFFF;
-        highlightNeighbours(metaDataMap.get(this).id);
-    };
+    // polygon.mouseover = function (mouseEvent) {
+    //     this.tint = 0xFFFFFF;
+    //     highlightNeighbours(metaDataMap.get(this).id);
+    // };
     // @ts-ignore
-    polygon.mouseout = function (mouseEvent) {
-        this.tint = this.defaultColor;
-        resetNeighbours(metaDataMap.get(this).id);
-    };
+    // polygon.mouseout = function (mouseEvent) {
+    //     this.tint = this.defaultColor;
+    //     resetNeighbours(metaDataMap.get(this).id);
+    // };
     // @ts-ignore
     polygon.click = function (mouseEvent) {
-        if (!movementInProgress) {
-            offsetX = metaDataMap.get(this).midX;
-            offsetY = metaDataMap.get(this).midY;
-            updateMainContainer();
-        }
+        callbackMoveTo(metaDataMap.get(this).id);
     };
-    let color = getRandomNumber(16777214);
-    polygon.beginFill(0xFFFFFF, 1.0);
+    let color = city.color;
+    polygon.beginFill(0xFFFFFF, 0.7);
     polygon.tint = color;
     metaDataMap.get(polygon).defaultColor = color;
     polygon.lineStyle(1, 0x110000);
@@ -178,10 +197,10 @@ function displayCity(city: any) {
     polygon.endFill();
     polygon.x = offsetX;
     polygon.y = offsetY;
-    polygonsMap.set(city.siteId, polygon);
+    polygonsMap.set(city.id, polygon);
     mapContainer.addChild(polygon);
 
-    let text = new PIXI.Text(city.siteId);
+    let text = new PIXI.Text(city.id);
     text.x = offsetX + midX - 7;
     text.y = offsetY + midY - 3;
     text.style.fontSize = 10;

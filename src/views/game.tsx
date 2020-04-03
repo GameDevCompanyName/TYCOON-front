@@ -19,6 +19,8 @@ import InteractionPanel from "../components/interaction-panel/interaction-panel"
 import ToastContainer from "../components/common/toast-container/toast-container";
 import {Config} from "../common/config";
 import {initPixiApp} from "../components/interactive-map/interactive-map";
+import {socket} from "../common/socket";
+import requestWorld = socket.requestWorld;
 
 let shoppingCartBuffer = new Map<number, number>();
 
@@ -30,9 +32,25 @@ const Game = () => {
     const [shoppingCart, setShoppingCart] = useState(new Map<number, number>());
 
     let socket: WebSocket;
+    let moveTo: Function;
+    
+    function locationClicked(id: number) {
+        moveTo(id);
+    }
+
+    function worldLoaded(data: string) {
+        moveTo = initPixiApp(data, locationClicked);
+        moveTo(6);
+    }
 
     onload = function () {
         socket = new WebSocket("ws://192.168.1.50:8080/game");
+        socket.onopen = function () {
+            requestWorld(socket);
+        };
+        socket.onmessage = function (event : MessageEvent) {
+            worldLoaded(event.data);
+        }
         // reloadShoppingCart();
     };
 
@@ -59,7 +77,7 @@ const Game = () => {
             oldValue = 0;
         switch (action) {
             case game.StoreAction.Buy: {
-                if (oldValue == -1){
+                if (oldValue == -1) {
                     shoppingCartBuffer.delete(entryId);
                 } else {
                     shoppingCartBuffer.set(entryId, oldValue + 1);
@@ -67,7 +85,7 @@ const Game = () => {
                 break;
             }
             case game.StoreAction.Sell: {
-                if (oldValue == 1){
+                if (oldValue == 1) {
                     shoppingCartBuffer.delete(entryId);
                 } else {
                     shoppingCartBuffer.set(entryId, oldValue - 1);
@@ -91,12 +109,14 @@ const Game = () => {
     function handleSend(event: any) {
         event.preventDefault();
         addToast("Flex", {appearance: 'info', autoDismiss: true});
-        socket.send("{" +
-            "\"resource\" : \"/game/player\"" +
-            "}");
-        socket.onmessage = function (event: MessageEvent) {
-            alert(event.data);
-        }
+        // socket.send("{" +
+        //     "\"request\" : \"init\"," +
+        //     "\"parameters\" : {}" +
+        //     "}");
+        // socket.onmessage = function (event: MessageEvent) {
+        //     let response = JSON.parse(event.data);
+        //     console.log(response.data.world);
+        // }
     }
 
     return (
@@ -134,4 +154,3 @@ root && ReactDOM.render(
         <Game/>
     </ToastProvider>,
     root);
-initPixiApp();
