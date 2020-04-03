@@ -4,14 +4,11 @@ export declare module game {
         Sell = 1
     }
     class PlayerData {
-        constructor(id: number, name: string, money: number, cityId: number, quantityMask: number, quantityVacc: number, userId: number);
+        constructor(id: number, name: string, money: number, cityId: number);
         id: number;
         name: string;
         money: number;
         cityId: number;
-        quantityMask: number;
-        quantityVacc: number;
-        userId: number;
         static initialState: PlayerData;
     }
     class StoreEntryInfo {
@@ -22,9 +19,10 @@ export declare module game {
         quantity: number;
     }
     class CityData {
-        constructor(id: number, name: string, store: Array<StoreEntryInfo>, players: Array<string>);
+        constructor(id: number, name: string, population: number, store: Array<StoreEntryInfo>, players: Array<string>);
         id: number;
         name: string;
+        population: number;
         storeInfo: Array<StoreEntryInfo>;
         players: Array<string>;
         static initialState: CityData;

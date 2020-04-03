@@ -30,7 +30,7 @@ function StoreEntry(props: any) {
                             className="common-styles__text store-entry__cost common-styles__money">{props.entryCost} $
                         </div>
                     </div>
-                    <div className="common-styles__text store-entry__quantity">{props.entryQuantity}</div>
+                    <div className="common-styles__text store-entry__quantity">{props.entryQuantity} шт.</div>
                 </div>
                 <button className="common-styles__button store-entry__button store-entry__minus" onClick={handleBuy}>+
                 </button>

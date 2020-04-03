@@ -21,45 +21,104 @@ import {Config} from "../common/config";
 import {initPixiApp} from "../components/interactive-map/interactive-map";
 import {socket} from "../common/socket";
 import requestWorld = socket.requestWorld;
+import moveToCity = socket.moveToCity;
+import requestPlayer = socket.requestPlayer;
 
 let shoppingCartBuffer = new Map<number, number>();
+let playerDataBuffer : PlayerData;
+let cityDataBuffer : CityData;
 
 const Game = () => {
 
     const {addToast} = useToasts();
     const [playerData, setPlayerData] = useState(PlayerData.initialState);
-    const [cityData, setCityData] = useState(CityData.testState);
+    const [cityData, setCityData] = useState(CityData.initialState);
     const [shoppingCart, setShoppingCart] = useState(new Map<number, number>());
 
     let socket: WebSocket;
     let moveTo: Function;
-    
+    let isMovement: Function;
+
     function locationClicked(id: number) {
-        moveTo(id);
+        if (!isMovement()){
+            moveToCity(socket, id);
+        }
     }
 
     function worldLoaded(data: string) {
-        moveTo = initPixiApp(data, locationClicked);
-        moveTo(6);
+        console.log("Рисую город");
+        console.log(playerData.cityId);
+        let functions = initPixiApp(data, locationClicked, playerDataBuffer.cityId);
+        moveTo = functions.moveTo;
+        isMovement = functions.isMovement
     }
 
     onload = function () {
         socket = new WebSocket("ws://192.168.1.50:8080/game");
         socket.onopen = function () {
+            requestPlayer(socket);
             requestWorld(socket);
         };
-        socket.onmessage = function (event : MessageEvent) {
-            worldLoaded(event.data);
-        }
-        // reloadShoppingCart();
+        socket.onmessage = function (event: MessageEvent) {
+            handleRequest(JSON.parse(event.data));
+        };
+        socket.onerror = function(){
+            addToast("Ошибка соединения с сервером.", {appearance: 'error', autoDismiss: true});
+        };
+        socket.onclose = function(){
+            addToast("Соединение с сервером потеряно.", {appearance: 'error', autoDismiss: true});
+        };
+        reloadShoppingCart();
     };
+
+    function handleRequest(response: any) {
+        if (response.status != 200) {
+            addToast("Операция не удалась.", {appearance: 'error', autoDismiss: true});
+            return;
+        }
+        switch (response.type) {
+            case "world": {
+                console.log("Пришёл ответ на мир");
+                cityDataUpdated(response.data.city);
+                playerDataUpdated(response.data.player);
+                worldLoaded(response.data.world);
+                break;
+            }
+            case "city": {
+                console.log("Пришёл ответ на город");
+                cityDataUpdated(response.data.city);
+                break;
+            }
+            case "player" : {
+                console.log("Пришёл ответ на игрока");
+                playerDataUpdated(response.data.player);
+                console.log(playerData);
+                break;
+            }
+            case "move" : {
+                console.log("Пришёл ответ на передвижение");
+                cityDataUpdated(response.data.city);
+                moveTo(cityDataBuffer.id);
+                break;
+            }
+            default: {
+                addToast("Не удалось обработать ответ сервера.", {appearance: 'error', autoDismiss: true});
+            }
+        }
+    }
 
     // function showToast(text: any) {
     // addToast(text, "Закрыть");
     // }
 
-    function playerDataUpdated(playerData: PlayerData) {
-        setPlayerData(playerData);
+    function playerDataUpdated(playerRawData: any) {
+        playerDataBuffer = new PlayerData(
+            playerRawData.id,
+            playerRawData.name,
+            playerRawData.money,
+            playerRawData.cityId
+        );
+        setPlayerData(playerDataBuffer);
     }
 
     function reloadShoppingCart() {
@@ -94,11 +153,17 @@ const Game = () => {
             }
         }
         setShoppingCart(shoppingCartBuffer);
-        console.log(shoppingCart);
     }
 
-    function cityDataUpdated(cityData: CityData) {
-        setCityData(cityData);
+    function cityDataUpdated(cityRawData: any) {
+        cityDataBuffer = new CityData(
+            cityRawData.id,
+            cityRawData.name,
+            cityRawData.population,
+            CityData.testState.storeInfo,
+            cityRawData.players
+        );
+        setCityData(cityDataBuffer);
     }
 
     function updateInfo() {

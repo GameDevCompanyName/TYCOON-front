@@ -5,7 +5,7 @@ import * as PIXI from 'pixi.js';
 let app: PIXI.Application;
 let mapContainer: PIXI.Container;
 
-let scale = 1.0;
+let scale = 2.0;
 let offsetX = 0;
 let offsetY = 0;
 
@@ -24,7 +24,13 @@ let metaDataMap = new Map<PIXI.Graphics, PolygonMetaData>();
 
 let moveCallback : Function;
 
-export function initPixiApp(data: string, locationClicked: (id: number) => void) : Function {
+function mountOnPage() {
+    let parentDiv = getParentDiv();
+    parentDiv.style.background = 'none';
+    parentDiv.appendChild(app.view);
+}
+
+export function initPixiApp(worldData: string, locationClicked: (id: number) => void, initialCityId: number) : any {
 
     moveCallback = locationClicked;
 
@@ -33,8 +39,7 @@ export function initPixiApp(data: string, locationClicked: (id: number) => void)
         height: window.innerHeight
     });
 
-    let parentDiv = getParentDiv();
-    parentDiv.appendChild(app.view);
+    mountOnPage();
     app.renderer.backgroundColor = 0x0077be;
     app.renderer.view.style.position = "absolute";
     app.renderer.view.style.display = "block";
@@ -61,28 +66,32 @@ export function initPixiApp(data: string, locationClicked: (id: number) => void)
         app.renderer.view.style.height = mapHeight + 'px';
         app.renderer.view.width = mapWidth;
         app.renderer.view.height = mapHeight;
+        // app.stage.x = +(mapWidth - oldWidth)/2;
+        // app.stage.y = +(mapHeight - oldHeight)/2;
+        updateMainContainer(1);
     }
     resize();
     window.onresize = resize;
 
-    displayWorld(data);
+    displayWorld(worldData);
+    setTimeout(function () {
+        moveTo(initialCityId, 1);
+    }, 50);
 
-    return moveTo;
+    return {moveTo : moveTo, isMovement: isMovement};
+}
+
+function isMovement() {
+    return movementInProgress;
 }
 
 function getParentDiv() : HTMLDivElement {
     return document.querySelector(".city-card__map") as (HTMLDivElement);
 }
 
-function displayWorld(worldText: string) {
-    let worldObject = JSON.parse(worldText);
-    let cities = JSON.parse(worldObject.data.world);
-
-    console.log(typeof cities);
-
-    for (let i = 0; i < cities.length; i++) {
-        console.log("asdasd");
-        displayCity(cities[i]);
+function displayWorld(worldData: any) {
+    for (let i = 0; i < worldData.length; i++) {
+        displayCity(worldData[i]);
     }
 }
 
@@ -107,7 +116,7 @@ function resetNeighbours(id: number) {
     }
 }
 
-function updateMainContainer() {
+function updateMainContainer(time: number) {
     newX = -(offsetX - mapWidth / 2);
     newY = -(offsetY - mapHeight / 2);
     oldX = mapContainer.x;
@@ -115,7 +124,7 @@ function updateMainContainer() {
     animate(
         inOutQuad,
         fromOldToNew,
-        1000
+        time
     );
 }
 
@@ -130,19 +139,20 @@ function callbackMoveTo(id: number) {
     moveCallback(id);
 }
 
-function moveTo(id: number) {
+function moveTo(id: number, time: number) {
+    if (time == null)
+        time = 1000;
     if (!movementInProgress) {
         offsetX = metaDataMap.get(polygonsMap.get(id)).midX;
         offsetY = metaDataMap.get(polygonsMap.get(id)).midY;
-        updateMainContainer();
+        updateMainContainer(time);
     }
 }
 
 function displayCity(city: any) {
     // neighboursMap.set(city.id, city.neighbours);
 
-    console.log(city.polygonData);
-    let polygonData = (JSON.parse(city.polygonData));
+    let polygonData = city.polygonData;
 
     const pointsX = polygonData.pointsX;
     const pointsY = polygonData.pointsY;
@@ -192,7 +202,7 @@ function displayCity(city: any) {
     polygon.beginFill(0xFFFFFF, 0.7);
     polygon.tint = color;
     metaDataMap.get(polygon).defaultColor = color;
-    polygon.lineStyle(1, 0x110000);
+    // polygon.lineStyle(1, 0x110000);
     polygon.drawPolygon(points);
     polygon.endFill();
     polygon.x = offsetX;
@@ -201,9 +211,9 @@ function displayCity(city: any) {
     mapContainer.addChild(polygon);
 
     let text = new PIXI.Text(city.id);
-    text.x = offsetX + midX - 7;
-    text.y = offsetY + midY - 3;
-    text.style.fontSize = 10;
+    text.x = offsetX + midX - 7 * scale;
+    text.y = offsetY + midY - 3 * scale;
+    text.style.fontSize = 8 * scale;
     mapContainer.addChild(text);
 }
 

@@ -6,30 +6,21 @@ export module game {
     }
 
     export class PlayerData {
-        constructor(id: number, name: string, money: number, cityId: number, quantityMask: number, quantityVacc: number, userId: number) {
+        constructor(id: number, name: string, money: number, cityId: number) {
             this.id = id;
             this.name = name;
             this.money = money;
             this.cityId = cityId;
-            this.quantityMask = quantityMask;
-            this.quantityVacc = quantityVacc;
-            this.userId = userId;
         }
 
         id: number;
         name: string;
         money: number;
         cityId: number;
-        quantityMask: number;
-        quantityVacc: number;
-        userId: number;
 
         static initialState: PlayerData = new PlayerData(
             -1,
-            "Igorlo",
-            2534,
-            -1,
-            0,
+            "",
             0,
             -1
         );
@@ -50,7 +41,7 @@ export module game {
     }
 
     export class CityData {
-        constructor(id: number, name: string, store: Array<StoreEntryInfo>, players: Array<string>) {
+        constructor(id: number, name: string, population: number, store: Array<StoreEntryInfo>, players: Array<string>) {
             this.id = id;
             this.name = name;
             this.storeInfo = store;
@@ -59,12 +50,14 @@ export module game {
 
         id: number;
         name: string;
+        population: number;
         storeInfo: Array<StoreEntryInfo>;
         players: Array<string>;
 
         static initialState: CityData = new CityData(
             0,
             "",
+            0,
             new Array<StoreEntryInfo>(),
             new Array<string>()
         );
@@ -72,6 +65,7 @@ export module game {
         static testState: CityData = new CityData(
             16,
             "Петербург",
+            0,
             new Array<StoreEntryInfo>(
                 new StoreEntryInfo(0, "Дерево", 80, 567),
                 new StoreEntryInfo(1, "Камень", 135, 154),

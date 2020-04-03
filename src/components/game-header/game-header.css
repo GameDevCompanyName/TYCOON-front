@@ -1,5 +1,5 @@
 .game-header__main {
-    opacity: 0.5;
+    opacity: 0.3;
     padding: 10px 20px;
     margin: 0;
     background: #704f41;
@@ -20,6 +20,10 @@
     box-shadow: 0 0 6px #000000;
 }
 
+.game-header__main:hover > .game-header__middle {
+    opacity: 1.0;
+}
+
 .game-header__title {
     display: inline-block;
     font-size: 1.5em;
@@ -29,5 +33,28 @@
 
 .game-header__quit {
     display: inline-block;
-    justify-self: flex-end;
+}
+
+.game-header__middle {
+    display: inline-block;
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    opacity: 0.0;
+}
+
+.game-header__middle > div {
+    display: inline-block;
+}
+
+.game-header__github button {
+    /*padding: 12px 24px;*/
+    /*background: url("https://levashove.ru/wp-content/uploads/2018/03/github.png") center center;*/
+    background: #1b1b20;
+    color: white;
+    font-weight: bold;
+}
+
+.game-header__about button {
+    background: #3f6c77;
+    color: white;
+    font-weight: bold;
 }
