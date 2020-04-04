@@ -6,6 +6,8 @@ import TitleField from "../common/title-text/title-value";
 
 const CityCard = (props: any) => {
 
+
+
     return (
         <div className="city-card__main">
             <div className="city-card__wrapper common-styles__cut-corners common-styles__default-container">
@@ -16,7 +18,7 @@ const CityCard = (props: any) => {
 
                 </div>
                 <div className="city-card__info">
-                    <TitleField title={"Идентификатор"} field={props.cityData.id}/>
+                    <TitleField title={"Популяция"} field={props.cityData.population.toString()}/>
                     <TitleField title={"Игроки"} field={props.cityData.players.toString()}/>
                     {/*<PlayerList players={props.cityData.players}/>*/}
                 </div>

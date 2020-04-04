@@ -141,7 +141,7 @@ function callbackMoveTo(id: number) {
 
 function moveTo(id: number, time: number) {
     if (time == null)
-        time = 1000;
+        time = 300;
     if (!movementInProgress) {
         offsetX = metaDataMap.get(polygonsMap.get(id)).midX;
         offsetY = metaDataMap.get(polygonsMap.get(id)).midY;

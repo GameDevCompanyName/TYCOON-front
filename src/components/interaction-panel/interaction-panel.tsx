@@ -17,13 +17,16 @@ const InteractionPanel = (props : any) => {
             <div className="interaction-panel__wrapper">
                 <div className="interaction-panel__player-status common-styles__cut-corners common-styles__default-container">
                     <PlayerStatus
+                        reloadCart={props.reloadCart}
+                        buyCart={props.buyCart}
+                        storeInfo={props.storeInfo}
                         shoppingCart={props.shoppingCart}
-                        callback={props.callback}
+                        // callback={props.callback} TODO
                         playerData={props.playerData}
                     />
                 </div>
                 <div className="interaction-panel__chat common-styles__default-container common-styles__cut-corners">
-                    <Chat/>
+                    <Chat messages={props.messages}/>
                 </div>
             </div>
 

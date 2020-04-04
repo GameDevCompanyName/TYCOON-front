@@ -6,15 +6,17 @@
 }
 
 .game__header {
+    height: 3%;
+    z-index: 1;
 }
 
 .game__footer {
-    /*TODO*/
+    height: 0%;
 }
 
 .game__main-content {
     padding: 5px;
-    flex-grow: 30;
+    height: 97%;
     display: flex;
     flex-flow: row wrap;
     flex-direction: row;
@@ -48,12 +50,4 @@
     height: 100%;
     width: 100%;
     box-sizing: border-box;
-}
-
-.game__toast-wrapper {
-    margin: 5px;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: fit-content;
 }

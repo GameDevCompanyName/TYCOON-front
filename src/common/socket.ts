@@ -14,7 +14,7 @@ export module socket {
         let request = {
             request: "move",
             parameters: {
-                cityId: newCityId.toString()
+                cityId: newCityId
             }
         };
         socket.send(JSON.stringify(request));

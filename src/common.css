@@ -19,6 +19,10 @@ h1 {
     font-family: 'Roboto Slab', serif;
 }
 
+/*body:hover {*/
+/*    cursor: url("https://gamepedia.cursecdn.com/wowpedia/f/f5/Pointer_gauntlet_off_32x32.png"), auto;*/
+/*}*/
+
 body {
     width: 100vw;
     height: 100vh;
@@ -61,6 +65,15 @@ body {
     border-radius: 4px;
     padding: 16px;
     user-select: none;
+}
+
+.common-styles__default-shadow {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+.common-styles__default-shadow:hover {
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
 
 .common-styles__input {
@@ -127,6 +140,7 @@ body {
 
 .common-styles__button:hover, .common-styles__button:focus {
     cursor: pointer;
+    /*cursor: url("https://gamepedia.cursecdn.com/wowpedia/a/a4/Pointer_gauntlet_cast_on_32x32.png"), pointer;*/
     background-color: #ede7d2;
     box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }

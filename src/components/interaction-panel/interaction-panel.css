@@ -6,7 +6,8 @@
 }
 
 .interaction-panel__city-actions {
-    flex-basis: 60%;
+    /*flex-basis: 60%;*/
+    height: 60%;
     overflow-y: scroll;
 }
 
@@ -18,16 +19,19 @@
     padding: 0;
     margin: 5px;
     display: flex;
-    flex-basis: 40%;
+    /*flex-basis: 40%;*/
+    height: 40%;
     flex-direction: row;
 }
 
 .interaction-panel__player-status {
     margin: 0 10px 0 0;
     flex-basis: 50%;
+    height: 100%;
 }
 
 .interaction-panel__chat {
     margin: 0;
+    height: 100%;
     flex-basis: 50%;
 }

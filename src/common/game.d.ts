@@ -3,20 +3,22 @@ export declare module game {
         Buy = 0,
         Sell = 1
     }
-    class PlayerData {
-        constructor(id: number, name: string, money: number, cityId: number);
-        id: number;
-        name: string;
-        money: number;
-        cityId: number;
-        static initialState: PlayerData;
-    }
     class StoreEntryInfo {
         constructor(id: number, name: string, cost: number, quantity: number);
         id: number;
         name: string;
         cost: number;
         quantity: number;
+    }
+    class PlayerData {
+        constructor(id: number, name: string, money: number, cityId: number, inventory: Array<game.StoreEntryInfo>);
+        id: number;
+        name: string;
+        money: number;
+        cityId: number;
+        inventory: Array<StoreEntryInfo>;
+        static initialState: PlayerData;
+        static testState: PlayerData;
     }
     class CityData {
         constructor(id: number, name: string, population: number, store: Array<StoreEntryInfo>, players: Array<string>);
@@ -28,12 +30,9 @@ export declare module game {
         static initialState: CityData;
         static testState: CityData;
     }
-    class ToastData {
-        constructor(text: string, buttonText: string, deleteHandler: Function, onClick: Function, key: number);
+    class Message {
+        constructor(sender: string, text: string);
+        sender: string;
         text: string;
-        buttonText: string;
-        deleteHandler: Function;
-        onClick: Function;
-        key: number;
     }
 }

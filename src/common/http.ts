@@ -56,7 +56,7 @@ export module http {
                 handler(response);
             })
             .catch(error => {
-                alert(error);
+                console.log(error);
             });
     }
 
@@ -71,7 +71,7 @@ export module http {
                 returnEntity(responseResult, handler);
             })
             .catch(error => {
-                alert(error);
+                console.log(error);
             });
     }
 
