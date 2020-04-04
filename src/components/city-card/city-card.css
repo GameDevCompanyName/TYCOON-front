@@ -18,6 +18,8 @@
     flex-basis: 100%;
     padding: 0;
     margin: 0;
+    overflow: hidden;
+    box-shadow: inset 0 0 100px black;
 }
 
 .city-card__photo {

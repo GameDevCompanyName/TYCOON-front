@@ -1,7 +1,13 @@
 import * as React from 'react';
+import {Howl, Howler} from 'howler';
 import {game} from "../../common/game";
 import StoreAction = game.StoreAction;
 import "./store-entry.css";
+
+let sound = new Howl({
+    src: ["https://cdn-34.anonfile.com/J109b4meof/ba10e00a-1586017121/167329__willy-ineedthatapp-com__droplet4.mp3"]
+});
+
 
 function StoreEntry(props: any) {
 
@@ -9,12 +15,14 @@ function StoreEntry(props: any) {
         e.preventDefault();
         console.log("Купить");
         props.onStoreAction(props.entryId, StoreAction.Buy);
+        sound.play();
     }
 
     function handleSell(e: any) {
         e.preventDefault();
         console.log("Продать");
         props.onStoreAction(props.entryId, StoreAction.Sell);
+        sound.play();
     }
 
     return (
