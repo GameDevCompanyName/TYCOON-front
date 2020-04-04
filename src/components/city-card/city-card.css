@@ -19,6 +19,9 @@
     padding: 0;
     margin: 0;
     overflow: hidden;
+}
+
+.city-card__map > canvas {
     box-shadow: inset 0 0 100px black;
 }
 

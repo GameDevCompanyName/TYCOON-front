@@ -21,8 +21,10 @@ let mapHeight = 0;
 let neighboursMap = new Map<number, Array<number>>();
 let polygonsMap = new Map<number, PIXI.Graphics>();
 let metaDataMap = new Map<PIXI.Graphics, PolygonMetaData>();
+let playerMap = new Map<number, PIXI.Graphics>();
+let playerPositionBuffer = new Map<number, any>(); //kostil TODO
 
-let moveCallback : Function;
+let moveCallback: Function;
 
 function mountOnPage() {
     let parentDiv = getParentDiv();
@@ -30,8 +32,7 @@ function mountOnPage() {
     parentDiv.appendChild(app.view);
 }
 
-export function initPixiApp(worldData: string, locationClicked: (id: number) => void, initialCityId: number) : any {
-
+export function initPixiApp(worldData: string, locationClicked: (id: number) => void, initialCityId: number): any {
     moveCallback = locationClicked;
 
     app = new PIXI.Application({
@@ -51,7 +52,7 @@ export function initPixiApp(worldData: string, locationClicked: (id: number) => 
 
     let playerCircle = new PIXI.Graphics();
     playerCircle.beginFill(0xFFFFFF);
-    playerCircle.drawCircle(mapWidth / 2, mapHeight / 2, 8 * scale);
+    playerCircle.drawCircle(mapWidth / 2, mapHeight / 2, 6 * scale);
     app.stage.addChild(playerCircle);
 
     function resize() {
@@ -70,6 +71,7 @@ export function initPixiApp(worldData: string, locationClicked: (id: number) => 
         // app.stage.y = +(mapHeight - oldHeight)/2;
         updateMainContainer(1);
     }
+
     resize();
     window.onresize = resize;
 
@@ -78,14 +80,14 @@ export function initPixiApp(worldData: string, locationClicked: (id: number) => 
         moveTo(initialCityId, 1);
     }, 50);
 
-    return {moveTo : moveTo, isMovement: isMovement};
+    return {moveTo: moveTo, isMovement: isMovement, movePlayer: movePlayer};
 }
 
 function isMovement() {
     return movementInProgress;
 }
 
-function getParentDiv() : HTMLDivElement {
+function getParentDiv(): HTMLDivElement {
     return document.querySelector(".city-card__map") as (HTMLDivElement);
 }
 
@@ -124,29 +126,71 @@ function updateMainContainer(time: number) {
     animate(
         inOutQuad,
         fromOldToNew,
-        time
+        time,
+        {}
     );
 }
 
-function fromOldToNew(progress: number) {
-    let currentX = oldX + (newX - oldX) * progress;
-    let currentY = oldY + (newY - oldY) * progress;
-    mapContainer.x = currentX;
-    mapContainer.y = currentY;
+function fromOldToNew(progress: number, metaData: any) {
+    mapContainer.x = oldX + (newX - oldX) * progress;
+    mapContainer.y = oldY + (newY - oldY) * progress;
 }
 
 function callbackMoveTo(id: number) {
     moveCallback(id);
 }
 
-function moveTo(id: number, time: number) {
+function moveTo(city_id: number, time: number) {
     if (time == null)
         time = 300;
     if (!movementInProgress) {
-        offsetX = metaDataMap.get(polygonsMap.get(id)).midX;
-        offsetY = metaDataMap.get(polygonsMap.get(id)).midY;
+        offsetX = metaDataMap.get(polygonsMap.get(city_id)).midX;
+        offsetY = metaDataMap.get(polygonsMap.get(city_id)).midY;
         updateMainContainer(time);
     }
+}
+
+function movePlayerCircle(progress: number, metaData: any) {
+    let circle = playerMap.get(metaData.playerId);
+    let positionBuffer = playerPositionBuffer.get(metaData.playerId);
+
+    circle.x = positionBuffer.oldX + (metaData.newX - positionBuffer.oldX) * progress;
+    circle.y = positionBuffer.oldY + (metaData.newY - positionBuffer.oldY) * progress;
+
+    if (progress == 1.0) {
+        playerPositionBuffer.delete(metaData.playerId);
+    }
+}
+
+function movePlayer(player_id: number, city_id: number, time: number) {
+    let minX = metaDataMap.get(polygonsMap.get(city_id)).minX;
+    let maxX = metaDataMap.get(polygonsMap.get(city_id)).maxX;
+    let minY = metaDataMap.get(polygonsMap.get(city_id)).minY;
+    let maxY = metaDataMap.get(polygonsMap.get(city_id)).maxY;
+    let newX =
+        minX + (maxX - minX) * (0.3 + 0.4 * Math.random());
+    let newY =
+        minY + (maxY - minY) * (0.3 + 0.4 * Math.random());
+
+    if (time == null)
+        time = 200;
+
+    let positionMetaData = {
+        oldX: playerMap.get(player_id).x,
+        oldY: playerMap.get(player_id).y
+    };
+    playerPositionBuffer.set(player_id, positionMetaData);
+
+    animate(
+        inOutQuad,
+        movePlayerCircle,
+        time,
+        {
+            playerId: player_id,
+            newX: newX,
+            newY: newY
+        }
+    );
 }
 
 function displayCity(city: any) {
@@ -183,6 +227,10 @@ function displayCity(city: any) {
     data.id = city.id;
     data.midX = midX;
     data.midY = midY;
+    data.maxX = maxX;
+    data.maxY = maxY;
+    data.minX = minX;
+    data.minY = minY;
     polygon.interactive = true;
     // @ts-ignore
     // polygon.mouseover = function (mouseEvent) {
@@ -215,6 +263,16 @@ function displayCity(city: any) {
     text.y = offsetY + midY - 3 * scale;
     text.style.fontSize = 8 * scale;
     mapContainer.addChild(text);
+
+    city.players.forEach(function (player: any) {
+        let circle = new PIXI.Graphics();
+        circle.beginFill(0xCCCCCC);
+        circle.drawCircle(0, 0, 4 * scale);
+        mapContainer.addChild(circle);
+        playerMap.set(player.id, circle);
+        movePlayer(player.id, city.id, 0);
+    });
+
 }
 
 function getRandomNumber(max: number) {
@@ -225,7 +283,8 @@ function getRandomNumber(max: number) {
 function animate(
     timing: Function,
     callback: Function,
-    duration: number
+    duration: number,
+    metaData: any
 ) {
     movementInProgress = true;
     let start = performance.now();
@@ -238,7 +297,7 @@ function animate(
         // вычисление текущего состояния анимации
         let progress = timing(timeFraction);
 
-        callback(progress); // отрисовать её
+        callback(progress, metaData); // отрисовать её
 
         if (timeFraction < 1) {
             requestAnimationFrame(animate);
@@ -262,5 +321,9 @@ class PolygonMetaData {
     defaultColor: number;
     midX: number;
     midY: number;
+    maxY: number;
+    minY: number;
+    maxX: number;
+    minX: number;
     id: number;
 }

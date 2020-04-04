@@ -28,6 +28,13 @@ import Message = game.Message;
 let dealSound = new Howl({
     src: ["src/sound/deal_success.wav"]
 });
+let mainMusic = new Howl({
+    src: ["src/sound/music_1.mp3"],
+    loop: true
+});
+let horses = new Howl({
+    src: ["src/sound/horses.mp3"]
+});
 
 let shoppingCartBuffer = new Map<number, number>();
 let playerDataBuffer: PlayerData;
@@ -48,6 +55,7 @@ const Game = () => {
     let socket: WebSocket;
     let moveTo: Function;
     let isMovement: Function;
+    let movePlayer: Function;
 
     function locationClicked(id: number) {
         if (id == cityDataBuffer.id) {
@@ -63,7 +71,8 @@ const Game = () => {
         console.log(playerData.cityId);
         let functions = initPixiApp(data, locationClicked, playerDataBuffer.cityId);
         moveTo = functions.moveTo;
-        isMovement = functions.isMovement
+        isMovement = functions.isMovement;
+        movePlayer = functions.movePlayer;
     }
 
     function initSocket() {
@@ -85,8 +94,8 @@ const Game = () => {
     }
 
     onload = function () {
-        // socket = initSocket();
-        // reloadShoppingCart();
+        socket = initSocket();
+        reloadShoppingCart();
     };
 
     function error(text: string, cause: string) {
@@ -138,6 +147,7 @@ const Game = () => {
                 console.log("Пришёл ответ на передвижение");
                 cityDataUpdated(response.data.city);
                 moveTo(cityDataBuffer.id);
+                // horses.play();
                 break;
             }
             default: {
