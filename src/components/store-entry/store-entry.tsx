@@ -5,9 +5,8 @@ import StoreAction = game.StoreAction;
 import "./store-entry.css";
 
 let sound = new Howl({
-    src: ["https://cdn-34.anonfile.com/J109b4meof/ba10e00a-1586017121/167329__willy-ineedthatapp-com__droplet4.mp3"]
+    src: ["src/sound/click.mp3"]
 });
-
 
 function StoreEntry(props: any) {
 

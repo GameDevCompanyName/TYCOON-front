@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {Howl, Howler} from 'howler';
 import {useEffect, useState} from 'react';
 import * as ReactDOM from 'react-dom';
 import {ToastProvider, useToasts} from 'react-toast-notifications';
@@ -23,6 +24,10 @@ import requestWorld = socket.requestWorld;
 import moveToCity = socket.moveToCity;
 import requestPlayer = socket.requestPlayer;
 import Message = game.Message;
+
+let dealSound = new Howl({
+    src: ["src/sound/deal_success.wav"]
+});
 
 let shoppingCartBuffer = new Map<number, number>();
 let playerDataBuffer: PlayerData;
@@ -162,6 +167,7 @@ const Game = () => {
     }
 
     function buy() {
+        dealSound.play();
         addToast("Сделка совершена", {appearance: "success", autoDismiss: true});
         reloadShoppingCart();
     }
