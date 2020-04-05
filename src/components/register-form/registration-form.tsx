@@ -5,7 +5,6 @@ import "./registration-form.css";
 import {http} from "../../common/http";
 import contentOfPostRequest = http.contentOfPostRequest;
 import {Config} from "../../common/config";
-import srcFolder = Config.srcFolder;
 
 const RegistrationForm = () => {
     const [username, setUsername] = useState('');
@@ -31,7 +30,7 @@ const RegistrationForm = () => {
                 alert("Пользователь уже зарегистрирован");
                 break;
             case 200:
-                window.location.replace(srcFolder + "index.html");
+                // window.location.replace("/");
                 break;
             case 400:
                 alert("Ошибка");

@@ -62,6 +62,9 @@ const PlayerStatus = (props: any) => {
     function buildInventory(inventory: Array<StoreEntryInfo>) {
         let elements = new Array<JSX.Element>();
         inventory.forEach(function (value: StoreEntryInfo, index: number) {
+            if (value.quantity <= 0){
+                return
+            }
             elements.push(
                 <div className="player-status__inventory-item" key={index}>
                     <span className="player-status__inventory-item__name">{value.name}</span>
@@ -99,11 +102,11 @@ const PlayerStatus = (props: any) => {
                     <div className="player-status__shopping-cart-buttons-wrapper">
                         <button className="player-status__shopping-cart-drop-button common-styles__button"
                                 onClick={props.reloadCart}>
-                            <span>Сбросить</span>
+                            <span>Отмена</span>
                         </button>
                         <button className="player-status__shopping-cart-buy-button common-styles__button"
                                 onClick={props.buyCart}>
-                            <span>Купить</span>
+                            <span>Сделка</span>
                         </button>
                     </div>
                 </div>

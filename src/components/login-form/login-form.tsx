@@ -5,7 +5,6 @@ import "./login-form.css";
 import {Config} from "../../common/config";
 import {http} from "../../common/http";
 import contentOfPostRequest = http.contentOfPostRequest;
-import srcFolder = Config.srcFolder;
 
 const LoginForm = () => {
 
@@ -35,7 +34,7 @@ const LoginForm = () => {
                 alert("Пользователь уже зарегистрирован");
                 break;
             case 200:
-                window.location.replace(srcFolder + "index.html");
+                // window.location.replace(srcFolder + "index.html");
                 break;
             case 400:
                 alert("Ошибка");

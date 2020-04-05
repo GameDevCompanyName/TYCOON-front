@@ -5,6 +5,8 @@ import * as PIXI from 'pixi.js';
 let app: PIXI.Application;
 let mapContainer: PIXI.Container;
 
+let thisPlayerId : number;
+
 let scale = 2.0;
 let offsetX = 0;
 let offsetY = 0;
@@ -32,7 +34,8 @@ function mountOnPage() {
     parentDiv.appendChild(app.view);
 }
 
-export function initPixiApp(worldData: string, locationClicked: (id: number) => void, initialCityId: number): any {
+export function initPixiApp(worldData: string, locationClicked: (id: number) => void, initialCityId: number, playerId: number): any {
+    thisPlayerId = playerId;
     moveCallback = locationClicked;
 
     app = new PIXI.Application({
@@ -265,6 +268,9 @@ function displayCity(city: any) {
     mapContainer.addChild(text);
 
     city.players.forEach(function (player: any) {
+        if (player.id === thisPlayerId){
+            return;
+        }
         let circle = new PIXI.Graphics();
         circle.beginFill(0xCCCCCC);
         circle.drawCircle(0, 0, 4 * scale);

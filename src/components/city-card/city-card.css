@@ -19,6 +19,7 @@
     padding: 0;
     margin: 0;
     overflow: hidden;
+    cursor: crosshair;
 }
 
 .city-card__map > canvas {

@@ -19,11 +19,13 @@ import StoreEntryInfo = game.StoreEntryInfo;
 import InteractionPanel from "../components/interaction-panel/interaction-panel";
 import {Config} from "../common/config";
 import {initPixiApp} from "../components/interactive-map/interactive-map";
-import {socket} from "../common/socket";
-import requestWorld = socket.requestWorld;
-import moveToCity = socket.moveToCity;
-import requestPlayer = socket.requestPlayer;
+import {socketActions} from "../common/socket";
+import requestWorld = socketActions.requestWorld;
+import moveToCity = socketActions.moveToCity;
+import requestPlayer = socketActions.requestPlayer;
 import Message = game.Message;
+import sendBuy = socketActions.sendBuy;
+import socketHost = Config.socketHost;
 
 let dealSound = new Howl({
     src: ["src/sound/deal_success.wav"]
@@ -41,18 +43,19 @@ let playerDataBuffer: PlayerData;
 let cityDataBuffer: CityData;
 let messageBuffer: Array<Message>;
 
+let socket: WebSocket;
+
 const Game = () => {
 
     const {addToast} = useToasts();
-    const [playerData, setPlayerData] = useState(PlayerData.testState);
-    const [cityData, setCityData] = useState(CityData.testState);
+    const [playerData, setPlayerData] = useState(PlayerData.initialState);
+    const [cityData, setCityData] = useState(CityData.initialState);
     const [shoppingCart, setShoppingCart] = useState(new Map<number, number>());
     const [messages, setMessages] = useState(new Array<Message>(
         new Message("Igorlo", "Всем привет в этом ламповом чатике"),
         new Message("Alex", "Хули нам пацанам"),
     ));
 
-    let socket: WebSocket;
     let moveTo: Function;
     let isMovement: Function;
     let movePlayer: Function;
@@ -69,14 +72,14 @@ const Game = () => {
     function worldLoaded(data: string) {
         console.log("Рисую город");
         console.log(playerData.cityId);
-        let functions = initPixiApp(data, locationClicked, playerDataBuffer.cityId);
+        let functions = initPixiApp(data, locationClicked, playerDataBuffer.cityId, playerDataBuffer.id);
         moveTo = functions.moveTo;
         isMovement = functions.isMovement;
         movePlayer = functions.movePlayer;
     }
 
     function initSocket() {
-        let socket = new WebSocket("ws://192.168.1.50:8080/game");
+        let socket = new WebSocket(socketHost + "/game");
         socket.onopen = function () {
             requestPlayer(socket);
             requestWorld(socket);
@@ -99,7 +102,7 @@ const Game = () => {
     };
 
     function error(text: string, cause: string) {
-        addToast(text + "\nПричина: " + cause, {appearance: "error"});
+        addToast(text + "Причина: " + cause, {appearance: "error"});
     }
 
     function handleRequest(response: any) {
@@ -135,6 +138,17 @@ const Game = () => {
                 console.log(playerData);
                 break;
             }
+            case "playerMoved" : {
+                if (response.status != 200) {
+                    error("Не удалось обработать перемещение другого игрока.", response.data.cause);
+                    break;
+                }
+                movePlayer(
+                    response.data.moveInfo.playerId,
+                    response.data.moveInfo.newCityId
+                );
+                break;
+            }
             case "move" : {
                 if (response.status != 200) {
                     if (response.status == 400) {
@@ -150,8 +164,24 @@ const Game = () => {
                 // horses.play();
                 break;
             }
+            case "deal": {
+                if (response.status != 200) {
+                    error("Не удалось совершить сделку.", response.data.cause);
+                    break;
+                }
+                playerDataUpdated(response.data.player);
+                cityDataUpdated(response.data.city);
+                dealSound.play();
+                addToast("Сделка совершена.", {
+                    appearance: "success",
+                    autoDismiss: true
+                });
+                reloadShoppingCart();
+                break;
+            }
             default: {
                 addToast("Не удалось обработать ответ сервера.", {appearance: 'error', autoDismiss: true});
+                break;
             }
         }
     }
@@ -161,12 +191,20 @@ const Game = () => {
     // }
 
     function playerDataUpdated(playerRawData: any) {
+        let inventory: Array<StoreEntryInfo> = [];
+
+        playerRawData.resources.forEach(function (resource: any) {
+            inventory.push(
+                new StoreEntryInfo(resource.id, resource.name, 0, resource.quantity)
+            );
+        });
+
         playerDataBuffer = new PlayerData(
             playerRawData.id,
             playerRawData.name,
             playerRawData.money,
             playerRawData.cityId,
-            new Array<game.StoreEntryInfo>() //TODO
+            inventory
         );
         setPlayerData(playerDataBuffer);
     }
@@ -177,9 +215,7 @@ const Game = () => {
     }
 
     function buy() {
-        dealSound.play();
-        addToast("Сделка совершена", {appearance: "success", autoDismiss: true});
-        reloadShoppingCart();
+        sendBuy(socket, shoppingCartBuffer);
     }
 
     function onStoreAction(entryId: number, action: StoreAction) {
@@ -209,7 +245,6 @@ const Game = () => {
     }
 
     function cityDataUpdated(cityRawData: any) {
-
         let store = new Array<StoreEntryInfo>();
         cityRawData.resources.forEach(function (resource: any) {
             store.push(
@@ -232,19 +267,6 @@ const Game = () => {
         setCityData(cityDataBuffer);
     }
 
-    // function handleSend(event: any) {
-    //     event.preventDefault();
-    //     addToast("Flex", {appearance: 'info', autoDismiss: true});
-    //     // socket.send("{" +
-    //     //     "\"request\" : \"init\"," +
-    //     //     "\"parameters\" : {}" +
-    //     //     "}");
-    //     // socket.onmessage = function (event: MessageEvent) {
-    //     //     let response = JSON.parse(event.data);
-    //     //     console.log(response.data.world);
-    //     // }
-    // }
-
     return (
         <div className="game__main-wrapper">
             <div className="game__header">
@@ -259,7 +281,7 @@ const Game = () => {
                         onStoreAction={onStoreAction}
                         storeInfo={cityData.storeInfo}
                         reloadCart={reloadShoppingCart}
-                        buyCart={buy}
+                        buyCart={buy.bind(this)}
                         // callback={} TODO
                         playerData={playerData}
                         shoppingCart={shoppingCart}
@@ -267,9 +289,6 @@ const Game = () => {
                     />
                 </div>
             </div>
-            {/*<div className="game__footer">*/}
-            {/*    <button onClick={handleSend}>ws send</button>*/}
-            {/*</div>*/}
         </div>
     );
 };
