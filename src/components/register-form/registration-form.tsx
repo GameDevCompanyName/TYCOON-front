@@ -5,6 +5,7 @@ import "./registration-form.css";
 import {http} from "../../common/http";
 import contentOfPostRequest = http.contentOfPostRequest;
 import {Config} from "../../common/config";
+import relativeHost = Config.relativeHost;
 
 const RegistrationForm = () => {
     const [username, setUsername] = useState('');
@@ -30,7 +31,7 @@ const RegistrationForm = () => {
                 alert("Пользователь уже зарегистрирован");
                 break;
             case 200:
-                // window.location.replace("/");
+                window.location.href = (relativeHost + "/");
                 break;
             case 400:
                 alert("Ошибка");
