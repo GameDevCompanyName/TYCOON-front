@@ -3,8 +3,8 @@ FROM node:12
 # создание директории приложения
 WORKDIR /app
 
-COPY . ./server/
-COPY ../public ./
+COPY ./server ./server
+COPY ./public ./public
 
 WORKDIR /app/server
 
