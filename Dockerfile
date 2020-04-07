@@ -11,4 +11,4 @@ WORKDIR /app/server
 RUN npm install
 EXPOSE 80
 
-CMD [ "node", "start" ]
+CMD [ "node", "server.js" ]
