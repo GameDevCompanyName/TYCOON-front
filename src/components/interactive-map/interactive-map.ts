@@ -169,8 +169,7 @@ function movePlayerCircle(progress: number, metaData: any) {
     }
 }
 
-function movePlayer(player_id: number, city_id: number, time: number) {
-
+async function movePlayer(player_id: number, city_id: number, time: number) {
     let minX = metaDataMap.get(polygonsMap.get(city_id)).minX;
     let maxX = metaDataMap.get(polygonsMap.get(city_id)).maxX;
     let minY = metaDataMap.get(polygonsMap.get(city_id)).minY;

@@ -3,8 +3,10 @@ FROM node:12
 # создание директории приложения
 WORKDIR /app
 
-COPY ./server ./server
-COPY ./public ./public
+COPY . .
+
+RUN npm install
+RUN npm run build
 
 WORKDIR /app/server
 
