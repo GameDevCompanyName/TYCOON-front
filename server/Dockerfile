@@ -3,8 +3,7 @@ FROM node:12
 # создание директории приложения
 WORKDIR /app
 
-COPY package*.json ./server/
-COPY server.js ./server/
+COPY . ./server/
 COPY ../public ./
 
 WORKDIR /app/server
