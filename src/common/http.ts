@@ -54,9 +54,6 @@ export module http {
         postRequest(url, parameters, withCredentials)
             .then(response => {
                 handler(response);
-            })
-            .catch(error => {
-                console.log(error);
             });
     }
 

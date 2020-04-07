@@ -3,3 +3,5 @@
 /covid-front.iml
 /node_modules/
 /.idea/
+/server/node_modules/
+/server/package-lock.json

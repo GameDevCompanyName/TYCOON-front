@@ -28,14 +28,14 @@ import sendBuy = socketActions.sendBuy;
 import socketHost = Config.socketHost;
 
 let dealSound = new Howl({
-    src: ["src/sound/deal_success.wav"]
+    src: ["sound/deal_success.wav"]
 });
 let mainMusic = new Howl({
-    src: ["src/sound/music_1.mp3"],
+    src: ["sound/music_1.mp3"],
     loop: true
 });
 let horses = new Howl({
-    src: ["src/sound/horses.mp3"]
+    src: ["sound/horses.mp3"]
 });
 
 let shoppingCartBuffer = new Map<number, number>();
