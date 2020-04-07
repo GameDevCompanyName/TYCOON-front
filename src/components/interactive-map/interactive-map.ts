@@ -5,7 +5,7 @@ import * as PIXI from 'pixi.js';
 let app: PIXI.Application;
 let mapContainer: PIXI.Container;
 
-let thisPlayerId : number;
+let thisPlayerId: number;
 
 let scale = 2.0;
 let offsetX = 0;
@@ -137,6 +137,9 @@ function updateMainContainer(time: number) {
 function fromOldToNew(progress: number, metaData: any) {
     mapContainer.x = oldX + (newX - oldX) * progress;
     mapContainer.y = oldY + (newY - oldY) * progress;
+    if (progress == 1.0) {
+        movementInProgress = false;
+    }
 }
 
 function callbackMoveTo(id: number) {
@@ -144,13 +147,14 @@ function callbackMoveTo(id: number) {
 }
 
 function moveTo(city_id: number, time: number) {
+    movementInProgress = true;
+
     if (time == null)
         time = 300;
-    if (!movementInProgress) {
-        offsetX = metaDataMap.get(polygonsMap.get(city_id)).midX;
-        offsetY = metaDataMap.get(polygonsMap.get(city_id)).midY;
-        updateMainContainer(time);
-    }
+
+    offsetX = metaDataMap.get(polygonsMap.get(city_id)).midX;
+    offsetY = metaDataMap.get(polygonsMap.get(city_id)).midY;
+    updateMainContainer(time);
 }
 
 function movePlayerCircle(progress: number, metaData: any) {
@@ -166,6 +170,7 @@ function movePlayerCircle(progress: number, metaData: any) {
 }
 
 function movePlayer(player_id: number, city_id: number, time: number) {
+
     let minX = metaDataMap.get(polygonsMap.get(city_id)).minX;
     let maxX = metaDataMap.get(polygonsMap.get(city_id)).maxX;
     let minY = metaDataMap.get(polygonsMap.get(city_id)).minY;
@@ -268,7 +273,7 @@ function displayCity(city: any) {
     mapContainer.addChild(text);
 
     city.players.forEach(function (player: any) {
-        if (player.id === thisPlayerId){
+        if (player.id === thisPlayerId) {
             return;
         }
         let circle = new PIXI.Graphics();
@@ -292,7 +297,6 @@ function animate(
     duration: number,
     metaData: any
 ) {
-    movementInProgress = true;
     let start = performance.now();
 
     requestAnimationFrame(function animate(time) {
@@ -307,8 +311,6 @@ function animate(
 
         if (timeFraction < 1) {
             requestAnimationFrame(animate);
-        } else {
-            movementInProgress = false;
         }
     });
 }
